@@ -12,66 +12,66 @@ public class SimpleTimer {
     
     public typealias SimpleTimerHandler = (SimpleTimer) -> Void
     
-    private let internalTimer: DispatchSourceTimer
-    private var isRunning = false
-    private var handler: SimpleTimerHandler
+    private let _timer: DispatchSourceTimer
+    private var _isRunning = false
+    private var _handler: SimpleTimerHandler
     
     public let repeats: Bool
     
     public init(interval: DispatchTimeInterval, repeats: Bool = false, leeway: DispatchTimeInterval = .seconds(0), queue: DispatchQueue = .main , handler: @escaping SimpleTimerHandler) {
-        self.handler = handler
+        self._handler = handler
         self.repeats = repeats
-        internalTimer = DispatchSource.makeTimerSource(queue: queue)
-        internalTimer.setEventHandler { [weak self] in
+        _timer = DispatchSource.makeTimerSource(queue: queue)
+        _timer.setEventHandler { [weak self] in
             guard let strongSelf = self else { return }
             handler(strongSelf)
         }
         
         if repeats {
-            internalTimer.schedule(deadline: .now() + interval, repeating: interval, leeway: leeway)
+            _timer.schedule(deadline: .now() + interval, repeating: interval, leeway: leeway)
         } else {
-            internalTimer.schedule(deadline: .now() + interval, leeway: leeway)
+            _timer.schedule(deadline: .now() + interval, leeway: leeway)
         }
     }
     
     deinit {
-        if !self.isRunning {
-            internalTimer.resume()
+        if !self._isRunning {
+            _timer.resume()
         }
     }
     
     public func fire() {
         if repeats {
-            handler(self)
+            _handler(self)
         } else {
-            handler(self)
-            internalTimer.cancel()
+            _handler(self)
+            _timer.cancel()
         }
     }
     
     public func start() {
-        if !isRunning {
-            internalTimer.resume()
-            isRunning = true
+        if !_isRunning {
+            _timer.resume()
+            _isRunning = true
         }
     }
     
     public func suspend() {
-        if isRunning {
-            internalTimer.suspend()
-            isRunning = false
+        if _isRunning {
+            _timer.suspend()
+            _isRunning = false
         }
     }
     
     public func reschedule(repeating interval: DispatchTimeInterval) {
         if repeats {
-            internalTimer.schedule(deadline: .now() + interval, repeating: interval)
+            _timer.schedule(deadline: .now() + interval, repeating: interval)
         }
     }
     
     public func reschedule(handler: @escaping SimpleTimerHandler) {
-        self.handler = handler
-        internalTimer.setEventHandler { [weak self] in
+        self._handler = handler
+        _timer.setEventHandler { [weak self] in
             guard let strongSelf = self else { return }
             handler(strongSelf)
         }
