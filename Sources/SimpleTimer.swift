@@ -18,7 +18,7 @@ public class SimpleTimer {
     
     public let repeats: Bool
     
-    public init(interval: DispatchTimeInterval, repeats: Bool = false, leeway: DispatchTimeInterval = .seconds(0), queue: DispatchQueue = .main , handler: @escaping SimpleTimerHandler) {
+    public init(interval: DispatchTimeInterval, repeats: Bool = false, leeway: DispatchTimeInterval = .seconds(0), queue: DispatchQueue = .main, handler: @escaping SimpleTimerHandler) {
         self._handler = handler
         self.repeats = repeats
         _timer = DispatchSource.makeTimerSource(queue: queue)
@@ -78,7 +78,7 @@ public class SimpleTimer {
     }
 }
 
-// MARK: - Repeating
+// MARK: - Repeating Helper
 
 extension SimpleTimer {
     
@@ -87,33 +87,33 @@ extension SimpleTimer {
     }
 }
 
-// MARK: - Throttle
+// MARK: - Throttle Helper
 
 extension SimpleTimer {
     
-    private static var timers = [String: DispatchSourceTimer]()
+    private static var _timers = [String: DispatchSourceTimer]()
     
     public static func throttle(interval: DispatchTimeInterval, identifier: String, queue: DispatchQueue = .main , handler: @escaping () -> Void) {
-        if let previousTimer = timers[identifier] {
+        if let previousTimer = _timers[identifier] {
             previousTimer.cancel()
-            timers.removeValue(forKey: identifier)
+            _timers.removeValue(forKey: identifier)
         }
         
         let timer = DispatchSource.makeTimerSource(queue: queue)
-        timers[identifier] = timer
+        _timers[identifier] = timer
         timer.schedule(deadline: .now() + interval)
         timer.setEventHandler {
             handler()
             timer.cancel()
-            timers.removeValue(forKey: identifier)
+            _timers.removeValue(forKey: identifier)
         }
         timer.resume()
     }
     
     public static func cancelThrottlingTimer(identifier: String) {
-        if let previousTimer = timers[identifier] {
+        if let previousTimer = _timers[identifier] {
             previousTimer.cancel()
-            timers.removeValue(forKey: identifier)
+            _timers.removeValue(forKey: identifier)
         }
     }
 }
