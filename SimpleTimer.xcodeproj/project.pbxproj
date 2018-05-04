@@ -36,6 +36,7 @@
 		A0D14B30209C09EE004C739D /* LICENSE */ = {isa = PBXFileReference; lastKnownFileType = text; path = LICENSE; sourceTree = "<group>"; };
 		A0D14B31209C0B66004C739D /* SimpleTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTimerTests.swift; sourceTree = "<group>"; };
 		A0D14B33209C0E45004C739D /* SimpleCountDownTimerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleCountDownTimerTests.swift; sourceTree = "<group>"; };
+		A0D14B35209C0FEB004C739D /* SimpleTimer.podspec */ = {isa = PBXFileReference; lastKnownFileType = text; path = SimpleTimer.podspec; sourceTree = "<group>"; };
 		A0D97870209C018700095ADD /* SimpleTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleTimer.swift; sourceTree = "<group>"; };
 		A0D97872209C027A00095ADD /* SimpleTimer+DispatchTimeInterval.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SimpleTimer+DispatchTimeInterval.swift"; sourceTree = "<group>"; };
 		A0D97874209C02BC00095ADD /* SimpleCountDownTimer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SimpleCountDownTimer.swift; sourceTree = "<group>"; };
@@ -65,6 +66,7 @@
 			children = (
 				A0D14B2F209C09E8004C739D /* README.md */,
 				A0D14B30209C09EE004C739D /* LICENSE */,
+				A0D14B35209C0FEB004C739D /* SimpleTimer.podspec */,
 				A0D9786E209C011300095ADD /* Sources */,
 				A0D9786F209C012000095ADD /* Tests */,
 				A0A8A26A209C008400AA3849 /* Products */,
